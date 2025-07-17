@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Akuma 外賣平台 - 精緻版</title>
+<style>
+  body {
+    font-family: "Noto Sans TC", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    background: #ff5722;
+    color: white;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-sizing: border-box;
+  }
+  /* Logo */
+  .logo {
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: white;
+    border-radius: 6px;
+    color: #ff5722;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 5px #fff3e0;
+    user-select: none;
+  }
+
+  /* Search bar */
+  .search-container {
+    flex: 1;
+    max-width: 400px;
+  }
+  .search-container input[type="search"] {
+    width: 100%;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+  }
+  .search-container input[type="search"]::placeholder {
+    color: #ffccbc;
+  }
+
+  /* Contact info */
+  .contact-info {
+    font-size: 0.9rem;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .contact-info b {
+    font-weight: 700;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  h2 {
+    margin-top: 0;
+    color: #ff5722;
+  }
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+  .menu-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
+  }
+  .menu-list li:last-child {
+    border-bottom: none;
+  }
+  .btn {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+  .btn:hover {
+    background: #e64a19;
+  }
+  #cart-panel {
+    border-top: 2px solid #ff5722;
+    padding-top: 1rem;
+    box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+    border-radius: 8px;
+    background: #fff8f5;
+  }
+  #cart-items {
+    margin-bottom: 1rem;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  .cart-item div {
+    flex: 1;
+  }
+  .qty-input {
+    width: 50px;
+    padding: 0.2rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  .remove-btn {
+    background: transparent;
+    border: none;
+    color: #e53935;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-left: 0.4rem;
+  }
+  #total-price {
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: right;
+    margin-bottom: 1rem;
+    color: #ff5722;
+  }
+  #checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    background: #ff5722;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s ease;
+  }
+  #checkout-btn:hover {
+    background: #e64a19;
+  }
+  #checkout-page {
+    display: none;
+  }
+  #checkout-page h2 {
+    margin-top: 0;
+  }
+  #checkout-form label {
+    display: block;
+    margin: 0.6rem 0 0.2rem 0;
+  }
+  #checkout-form input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  #submit-order {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s ease;
+  }
+  #submit-order:hover {
+    background: #388e3c;
+  }
+  #thankyou-msg {
+    display: none;
+    text-align: center;
+    color: #4caf50;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-top: 2rem;
+  }
+  .back-btn {
+    background: transparent;
+    border: none;
+    color: #ff5722;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  /* 底部橫幅 */
+  footer.banner {
+    background: #ff5722;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: auto;
+    box-shadow: 0 -4px 10px rgb(255 87 34 / 0.5);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">A</div>
+    Akuma外賣
+  </div>
+
+  <div class="search-container">
+    <input type="search" id="search" placeholder="搜尋菜單..." aria-label="搜尋菜單" />
+  </div>
+
+  <div class="contact-info">
+    聯絡電話: <b>02-1234-5678</b>
+  </div>
+</header>
+
+<main>
+  <section id="menu-page">
+    <h2>菜單</h2>
+    <ul class="menu-list" id="menu-list"></ul>
+
+    <div id="cart-panel">
+      <h3>購物車</h3>
+      <div id="cart-items">
+        <p>購物車內還沒有商品。</p>
+      </div>
+      <div id="total-price">總計: NT$0</div>
+      <button id="checkout-btn" class="btn" disabled>前往結帳</button>
+    </div>
+  </section>
+
+  <section id="checkout-page">
+    <button class="back-btn" id="back-to-menu">&larr; 返回菜單</button>
+    <h2>結帳</h2>
+    <form id="checkout-form">
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" required placeholder="請輸入您的姓名" />
+      
+      <label for="phone">電話</label>
+      <input type="tel" id="phone" name="phone" required placeholder="請輸入聯絡電話" />
+      
+      <label for="address">地址</label>
+      <input type="text" id="address" name="address" required placeholder="請輸入送餐地址" />
+      
+      <button type="submit" id="submit-order" class="btn">送出訂單</button>
+    </form>
+    <div id="thankyou-msg">感謝您的訂購！我們會盡快為您準備餐點。</div>
+  </section>
+</main>
+
+<footer class="banner">
+  【週末限定】全館滿500免運，輸入優惠碼 <strong>WEEKEND500</strong>，立即享優惠！
+</footer>
+
+<script>
+  const menuData = [
+    {id: 1, name: "招牌雞腿飯", price: 120, desc: "香嫩多汁雞腿配白飯，招牌好味道"},
+    {id: 2, name: "鹽酥雞", price: 90, desc: "外酥內嫩，香氣四溢，最佳下酒菜"},
+    {id: 3, name: "珍珠奶茶", price: 60, desc: "Q彈珍珠搭配香濃奶茶，甜而不膩"},
+    {id: 4, name: "滷肉飯", price: 70, desc: "經典台灣味，香氣四溢"},
+    {id: 5, name: "蔥抓餅", price: 50, desc: "香酥可口，早餐首選"},
+  ];
+
+  const menuListEl = document.getElementById('menu-list');
+  const cartItemsEl = document.getElementById('cart-items');
+  const totalPriceEl = document.getElementById('total-price');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const menuPage = document.getElementById('menu-page');
+  const checkoutPage = document.getElementById('checkout-page');
+  const backToMenuBtn = document.getElementById('back-to-menu');
+  const checkoutForm = document.getElementById('checkout-form');
+  const thankyouMsg = document.getElementById('thankyou-msg');
+  const searchInput = document.getElementById('search');
+
+  let cart = {};
+
+  function renderMenu(filter = '') {
+    menuListEl.innerHTML = '';
+    const filtered = menuData.filter(item => item.name.includes(filter) || item.desc.includes(filter));
+    if(filtered.length === 0){
+      menuListEl.innerHTML = '<li>找不到符合的菜單項目。</li>';
+      return;
+    }
+    filtered.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div>
+          <strong>${item.name}</strong><br />
+          <small style="color:#666;">${item.desc}</small>
+        </div>
+        <div style="text-align:right; min-width:100px;">
+          <div>NT$${item.price}</div>
+          <button class="btn add-btn" data-id="${item.id}">加入購物車</button>
+        </div>
+      `;
+      menuListEl.appendChild(li);
+    });
+  }
+
+  function renderCart() {
+    cartItemsEl.innerHTML = '';
+    const keys = Object.keys(cart);
+    if(keys.length === 0){
+      cartItemsEl.innerHTML = '<p>購物車內還沒有商品。</p>';
+      checkoutBtn.disabled = true;
+      totalPriceEl.textContent = '總計: NT$0';
+      return;
+    }
+    let total = 0;
+    keys.forEach(key => {
+      const item = cart[key];
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <div>${item.name}</div>
+        <div>
+          <input type="number" min="1" value="${item.qty}" class="qty-input" data-id="${item.id}" />
+          <button class="remove-btn" data-id="${item.id}">&times;</button>
+        </div>
+        <div style="min-width:80px; text-align:right;">NT$${item.price * item.qty}</div>
+      `;
+      cartItemsEl.appendChild(div);
+      total += item.price * item.qty;
+    });
+    totalPriceEl.textContent = `總計: NT$${total}`;
+    checkoutBtn.disabled = false;
+
+    document.querySelectorAll('.qty-input').forEach(input => {
+      input.addEventListener('change', e => {
+        const id = e.target.dataset.id;
+        let val = parseInt(e.target.value);
+        if(isNaN(val) || val < 1) val = 1;
+        e.target.value = val;
+        cart[id].qty = val;
+        renderCart();
+      });
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        delete cart[id];
+        renderCart();
+      });
+    });
+  }
+
+  menuListEl.addEventListener('click', e => {
+    if(e.target.classList.contains('add-btn')){
+      const id = e.target.dataset.id;
+      const item = menuData.find(i => i.id == id);
+      if(cart[id]){
+        cart[id].qty++;
+      } else {
+        cart[id] = {...item, qty:1};
+      }
+      renderCart();
+      alert(`${item.name} 已加入購物車！`);
+    }
+  });
+
+  checkoutBtn.addEventListener('click', () => {
+    menuPage.style.display = 'none';
+    checkoutPage.style.display = 'block';
+    thankyouMsg.style.display = 'none';
+    checkoutForm.style.display = 'block';
+    checkoutForm.reset();
+  });
+
+  backToMenuBtn.addEventListener('click', () => {
+    checkoutPage.style.display = 'none';
+    menuPage.style.display = 'block';
+  });
+
+  checkoutForm.addEventListener('submit', e => {
+    e.preventDefault();
+    checkoutForm.style.display = 'none';
+    thankyouMsg.style.display = 'block';
+    cart = {};
+    renderCart();
+  });
+
+  searchInput.addEventListener('input', e => {
+    renderMenu(e.target.value.trim());
+  });
+
+  renderMenu();
+  renderCart();
+</script>
+
+</body>
+</html>
